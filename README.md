@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Osta · أسطى
 
-## Getting Started
+A bilingual (English / Egyptian Arabic) tool-store catalogue built with Next.js. It lists ~27,000 hand tools, power tools, compressed-air equipment, welding gear, pumps and more, in a dense, spec-table layout.
 
-First, run the development server:
+## Features
+
+- English and Arabic with full RTL layout (`/en/...`, `/ar/...`); the language is picked from a cookie or `Accept-Language`
+- Category tree in a persistent sidebar, plus "shop by trade" groupings
+- Search across both languages and part numbers, with Arabic spelling normalisation
+- Filters (brand, price, stock, on sale), sorting and pagination
+- Product pages with a spec table and related products
+- Cart stored in the browser
+
+## Getting started
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Data
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The catalogue was collected from the public WooCommerce Store API of [toolsworldeg.com](https://toolsworldeg.com/). Only factual catalogue fields are stored (names, part numbers, prices, stock, specs, categories, brands, image URLs). Product images are linked, not copied.
 
-## Learn More
+| Path | What it is |
+| --- | --- |
+| `data/raw/` | Output of the scraper |
+| `data/catalog/` | Compact bilingual catalogue the app reads |
+| `data/category-en.json` | Hand-written English category names |
+| `data/glossary.json` | Arabic → English tool glossary used to translate product names |
 
-To learn more about Next.js, take a look at the following resources:
+To refresh:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+node scripts/scrape.mjs         # ~5 min, rate-limited
+node scripts/build-catalog.mjs  # rebuilds data/catalog; the dev server reloads it automatically
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+English product names come from the glossary rather than a translation service, so some read awkwardly. Adding terms to `data/glossary.json` and rebuilding improves them; the build prints the most common untranslated words.
 
-## Deploy on Vercel
+## Structure
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `src/app/[lang]/` — routes (home, category, brand, trade, search, offers, product, cart, 404)
+- `src/components/` — header, sidebar, product tables, filters, cart
+- `src/lib/catalog.ts` — in-memory catalogue, search and filtering
+- `src/lib/i18n.ts` — UI strings for both languages
+- `src/proxy.ts` — redirects `/` to the preferred language

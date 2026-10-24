@@ -1,26 +1,103 @@
 @import "tailwindcss";
 
+/* Catalogue look: white paper, hairline rules, dense type. Navy for structure,
+   blue for links, amber for actions, soft tints for state. Light mode only. */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #ffffff;
+  --surface: #ffffff;
+  --surface-2: #f5f7fa;
+  --surface-3: #e9eef4;
+  --border: #d5dce5;
+  --text: #16202c;
+  --muted: #5f6b7a;
+  --primary: #17365d;
+  --primary-2: #224b7d;
+  --link: #1c5aa6;
+  --tint: #eaf2fc;
+  --cta: #f2a900;
+  --cta-strong: #d99500;
+  --cta-ink: #1b1400;
+  --highlight: #fff5cc;
+  --sale: #c62828;
+  --ok: #2e7d32;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-line: var(--border);
+  --color-fg: var(--text);
+  --color-muted: var(--muted);
+  --color-primary: var(--primary);
+  --color-primary-2: var(--primary-2);
+  --color-link: var(--link);
+  --color-tint: var(--tint);
+  --color-cta: var(--cta);
+  --color-cta-strong: var(--cta-strong);
+  --color-cta-ink: var(--cta-ink);
+  --color-highlight: var(--highlight);
+  --color-sale: var(--sale);
+  --color-ok: var(--ok);
+  --font-sans: Arial, Helvetica, var(--font-arabic), sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html[lang="ar"] {
+  --font-sans: var(--font-arabic), Arial, Helvetica, sans-serif;
+}
+
+html {
+  color-scheme: light;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+a.lnk:hover,
+.lnk a:hover {
+  text-decoration: underline;
+}
+
+.scrollbar-none {
+  scrollbar-width: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+.product-img {
+  background: #fff;
+}
+
+/* Spec tables */
+.spec-table {
+  font-size: 13px;
+}
+.spec-table th {
+  font-weight: 700;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  text-align: start;
+  color: #fff;
+  background: var(--primary);
+  padding: 7px 10px;
+  white-space: nowrap;
+}
+.spec-table td {
+  border-bottom: 1px solid var(--border);
+  padding: 8px 10px;
+  vertical-align: middle;
+}
+.spec-table tbody tr:nth-child(even) td {
+  background: var(--surface-2);
+}
+.spec-table tbody tr:hover td {
+  background: var(--tint);
 }
